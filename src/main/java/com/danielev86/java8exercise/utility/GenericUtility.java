@@ -77,7 +77,7 @@ public class GenericUtility {
 				}
 
 			} catch (Exception e) {
-				logger.error("ERROR Writing csv file");;
+				logger.error("ERROR Writing csv file", e);;
 			}finally {
 				try {
 					if (writer != null) {				
@@ -87,8 +87,7 @@ public class GenericUtility {
 						csvPrinter.close();
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error("Error closing file", e);
 				}
 			}
 			
