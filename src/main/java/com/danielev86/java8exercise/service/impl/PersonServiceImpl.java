@@ -5,6 +5,8 @@ import static java.lang.Boolean.TRUE;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -22,8 +24,18 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 	private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
 	
-	public List<PersonBean> getAllPersonsDetails(){
-		return getAllPersonFromCsv();
+	public void getAllPersonsDetails(){
+		getGenericUtility().writeCsvFile(getCsvHeader(), getRecords(getAllPersonFromCsv()), "d:\\persons_all.csv");
+	}
+	
+	public void getAllPersonBySpecificGender(String gender){
+		List<PersonBean> persons = getAllPersonFromCsv();
+		
+		Map<String, List<PersonBean>> mapResult = persons.stream()
+				.collect(Collectors.groupingBy(PersonBean::getGender));
+		
+		getGenericUtility().writeCsvFile(getCsvHeader(), getRecords(mapResult.get(IConstants.FEMALE_GENDER_CODE)), "d:\\persons_female.csv");
+
 	}
 	
 	private List<PersonBean> getAllPersonFromCsv() {
@@ -47,6 +59,26 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 		}
 		logger.info("END parsing csv file with details of individual person");
 		return persons;
+	}
+	
+	private String[] getCsvHeader() {
+		String[] headers = {"FIRST_NAME", "LAST_NAME", "EMAIL", "BORN", "GENDER", "IP_ADRESS" };
+		return headers;
+	}
+	
+	private List<List<String>> getRecords(List<PersonBean> lstPerson){
+		List<List<String>> records = new ArrayList<List<String>>();
+		lstPerson.forEach(person ->{
+			List<String> record = new ArrayList<String>();
+			record.add( person.getFirstName());
+			record.add( person.getLastName());
+			record.add( person.getEmail());
+			record.add( getGenericUtility().formatDate(person.getBorn()));
+			record.add( person.getGender());
+			record.add( person.getIpAddress());
+			records.add(record);
+		});
+		return records;
 	}
 
 }

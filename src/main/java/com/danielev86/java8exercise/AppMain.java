@@ -1,5 +1,7 @@
 package com.danielev86.java8exercise;
 
+import static com.danielev86.java8exercise.constats.IConstants.FEMALE_GENDER_CODE;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -17,7 +19,8 @@ public class AppMain {
 	public static void main(String[] args) {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppMain.class);
 		PersonService personService = ctx.getBean(PersonServiceImpl.class);
-		personService.getAllPersonsDetails().forEach(x -> logger.info(x.toString()));
+		personService.getAllPersonsDetails();
+		personService.getAllPersonBySpecificGender(FEMALE_GENDER_CODE);
 	}
 
 }
