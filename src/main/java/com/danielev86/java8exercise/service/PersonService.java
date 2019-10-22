@@ -6,4 +6,8 @@ public interface PersonService {
 	
 	void getAllPersonBySpecificGender(String gender);
 
+	void getAllOrderedPersonDetails();
+
+	void getOrderedPersons();
+
 }

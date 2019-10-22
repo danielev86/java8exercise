@@ -1,9 +1,11 @@
 package com.danielev86.java8exercise.service.impl;
 
+import static com.danielev86.java8exercise.utility.ComparatorUtility.getAllOrderedPersons;
 import static java.lang.Boolean.TRUE;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ import com.danielev86.java8exercise.bean.PersonBean;
 import com.danielev86.java8exercise.constats.IConstants;
 import com.danielev86.java8exercise.service.CommonService;
 import com.danielev86.java8exercise.service.PersonService;
+import com.danielev86.java8exercise.utility.ComparatorUtility;
 
 @Service
 public class PersonServiceImpl extends CommonService implements PersonService {
@@ -25,17 +28,32 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 
 	
 	public void getAllPersonsDetails(){
-		getGenericUtility().writeCsvFile(getCsvHeader(), getRecords(getAllPersonFromCsv()), "d:\\persons_all.csv");
+		writeCsvFile(getAllPersonFromCsv(), "d:\\persons_all.csv");
+	}
+	
+	@Override
+	public void getAllOrderedPersonDetails() {
+		List<PersonBean> persons = getAllPersonFromCsv();
+		Collections.sort(persons, (p1, p2) ->{
+			return p1.getFirstName().compareTo(p2.getFirstName()) == 0
+					? p1.getLastName().compareTo(p2.getLastName())
+					: p1.getFirstName().compareTo(p2.getFirstName());
+		});
+		writeCsvFile(persons, "d:\\persons_all_ordered.csv");
+	}
+	
+	@Override
+	public void getOrderedPersons() {
+		List<PersonBean> persons = getAllPersonFromCsv();
+		getAllOrderedPersons(persons);
+		writeCsvFile(persons, "d:\\persons_all_ordered_by_utility.csv");
 	}
 	
 	public void getAllPersonBySpecificGender(String gender){
 		List<PersonBean> persons = getAllPersonFromCsv();
-		
 		Map<String, List<PersonBean>> mapResult = persons.stream()
 				.collect(Collectors.groupingBy(PersonBean::getGender));
-		
-		getGenericUtility().writeCsvFile(getCsvHeader(), getRecords(mapResult.get(IConstants.FEMALE_GENDER_CODE)), "d:\\persons_female.csv");
-
+		writeCsvFile(mapResult.get(IConstants.FEMALE_GENDER_CODE), "d:\\persons_gender.csv");
 	}
 	
 	private List<PersonBean> getAllPersonFromCsv() {
@@ -59,6 +77,10 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 		}
 		logger.info("END parsing csv file with details of individual person");
 		return persons;
+	}
+	
+	private void writeCsvFile(List<PersonBean> persons, String fileName) {
+		getGenericUtility().writeCsvFile(getCsvHeader(), getRecords(persons), fileName);
 	}
 	
 	private String[] getCsvHeader() {
