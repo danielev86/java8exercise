@@ -114,4 +114,12 @@ public class GenericUtility {
 		return sdf.format(date);
 	}
 	
+	public String pathByOs() {
+		if (OS.contains("windows")) {
+			return "d:\\";
+		}else {
+			return "/tmp/";
+		}
+	}
+	
 }
