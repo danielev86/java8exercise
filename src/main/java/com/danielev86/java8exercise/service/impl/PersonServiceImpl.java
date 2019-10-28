@@ -6,6 +6,7 @@ import static java.lang.Boolean.TRUE;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,12 +33,11 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 	
 	@Override
 	public void getAllOrderedPersonDetails() {
+		//Build a comparator with java 8 function
+		Comparator<PersonBean> comparator = Comparator.comparing(PersonBean::getFirstName)
+				.thenComparing(Comparator.comparing(PersonBean::getLastName));
 		List<PersonBean> persons = getAllPersonFromCsv();
-		Collections.sort(persons, (p1, p2) ->{
-			return p1.getFirstName().compareTo(p2.getFirstName()) == 0
-					? p1.getLastName().compareTo(p2.getLastName())
-					: p1.getFirstName().compareTo(p2.getFirstName());
-		});
+		Collections.sort(persons, comparator);
 		writeCsvFile(persons, getGenericUtility().pathByOs() + "persons_all_ordered.csv");
 	}
 	

@@ -8,7 +8,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.danielev86.java8exercise.service.CalculatorService;
 import com.danielev86.java8exercise.service.PersonService;
+import com.danielev86.java8exercise.service.impl.CalculatorServiceImpl;
 import com.danielev86.java8exercise.service.impl.PersonServiceImpl;
 
 @ComponentScan(basePackages = "com.danielev86")
@@ -23,6 +25,11 @@ public class AppMain {
 		personService.getAllPersonBySpecificGender(FEMALE_GENDER_CODE);
 		personService.getAllOrderedPersonDetails();
 		personService.getOrderedPersons();
+		
+		CalculatorService calculatorService = ctx.getBean(CalculatorServiceImpl.class);
+		System.out.println(calculatorService.doubleUpAllElements());
+		System.out.println(calculatorService.combineOperation());
+		System.out.println(calculatorService.getFilteredElements());
 	}
 
 }
