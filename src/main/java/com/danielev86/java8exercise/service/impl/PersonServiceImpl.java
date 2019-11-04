@@ -2,11 +2,14 @@ package com.danielev86.java8exercise.service.impl;
 
 import static com.danielev86.java8exercise.utility.ComparatorUtility.getAllOrderedPersons;
 import static java.lang.Boolean.TRUE;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ import com.danielev86.java8exercise.service.PersonService;
 public class PersonServiceImpl extends CommonService implements PersonService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
+
 
 	
 	public void getAllPersonsDetails(){
@@ -51,8 +55,56 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 	public void getAllPersonBySpecificGender(String gender){
 		List<PersonBean> persons = getAllPersonFromCsv();
 		Map<String, List<PersonBean>> mapResult = persons.stream()
-				.collect(Collectors.groupingBy(PersonBean::getGender));
+				.collect(groupingBy(PersonBean::getGender));
 		writeCsvFile(mapResult.get(IConstants.FEMALE_GENDER_CODE), getGenericUtility().pathByOs() + "persons_gender.csv");
+	}
+	
+	@Override
+	public void getAllPersonBySpecificGenderWithFilter(String gender) {
+		List<PersonBean> persons = getAllPersonFromCsv()
+				.stream()
+				.filter(p -> IConstants.FEMALE_GENDER_CODE.equals(gender))
+				.collect(toList());
+		writeCsvFile(persons, getGenericUtility().pathByOs() + "person_common_gender_filter.csv");
+	
+	}
+	
+	@Override
+	public void getAllPersonsFilteredByDate(Date from, Date to) {
+		List<PersonBean> persons = getAllPersonFromCsv();
+		List<PersonBean> personsResult = persons
+		.stream()
+		.filter(person -> (person.getBorn().after(from)) && (person.getBorn().before(to)) )
+		.collect(Collectors.toList());
+		Comparator<PersonBean> comparatorOrderDay = Comparator.comparing(PersonBean::getBorn)
+				.thenComparing(PersonBean::getFirstName)
+				.thenComparing(PersonBean::getLastName);
+		Collections.sort(personsResult, comparatorOrderDay);
+		writeCsvFile(personsResult, getGenericUtility().pathByOs() + "persons_filtered_by_date.csv");
+	}
+	
+	@Override
+	public void getOnlyNPersons(long limit) {
+		List<PersonBean> persons = getAllPersonFromCsv()
+				.stream()
+				.filter(person -> IConstants.FEMALE_GENDER_CODE.equals(person.getGender()))
+				.limit(limit)
+				.collect(toList());
+		writeCsvFile(persons, getGenericUtility().pathByOs() + "limit_" + limit + "n_persons.csv" );
+	}
+	
+	@Override
+	public void getFirstPersonFIlteredByDate(Date from, Date to) {
+		PersonBean person = getAllPersonFromCsv()
+				.stream()
+				.filter(p -> p.getBorn().after(from) && p.getBorn().before(to))
+				.findFirst()
+				.get();
+		if (person != null) {
+			logger.info("There is one element which fulfills this condition. Person: " + person);
+		}else {
+			logger.error("There are not elements which fulfill this condition ");
+		}
 	}
 	
 	private List<PersonBean> getAllPersonFromCsv() {
