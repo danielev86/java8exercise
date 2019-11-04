@@ -34,6 +34,7 @@ public class AppMain {
 		personService.getOnlyNPersons(10);
 		personService.getFirstPersonFIlteredByDate(from, to);
 		personService.getAllPersonBySpecificGenderWithFilter(FEMALE_GENDER_CODE);
+		personService.getCyclistWithoutDuplicateElement();
 		
 		CalculatorService calculatorService = ctx.getBean(CalculatorServiceImpl.class);
 		System.out.println(calculatorService.doubleUpAllElements());

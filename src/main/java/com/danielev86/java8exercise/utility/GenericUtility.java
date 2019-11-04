@@ -25,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.danielev86.java8exercise.bean.CyclistBean;
+
 @Component
 public class GenericUtility {
 	
@@ -120,6 +122,33 @@ public class GenericUtility {
 		}else {
 			return "/tmp/";
 		}
+	}
+	
+	public List<CyclistBean> getAllCyclistsMockData(){
+		CyclistBean c1 = new CyclistBean();
+		c1.setFirstName("Vincenzo");
+		c1.setLastName("Nibali");
+		c1.setTeamName("Trek - Segafredo");
+		CyclistBean c2 = new CyclistBean();
+		c2.setFirstName("Christofer");
+		c2.setLastName("Froome");
+		c2.setTeamName("Trek - Ineos");
+		CyclistBean c3 = new CyclistBean();
+		c3.setFirstName("Tom");
+		c3.setLastName("Dumoulin");
+		c3.setTeamName("Jumbo VIsma");
+		CyclistBean c4 = new CyclistBean();
+		c4.setFirstName("Vincenzo");
+		c4.setLastName("Nibali");
+		c4.setTeamName("Trek - Segafredo");
+		
+		List<CyclistBean> cyclists = new ArrayList<CyclistBean>();
+		cyclists.add(c1);
+		cyclists.add(c2);
+		cyclists.add(c3);
+		cyclists.add(c4);
+		
+		return cyclists;
 	}
 	
 }

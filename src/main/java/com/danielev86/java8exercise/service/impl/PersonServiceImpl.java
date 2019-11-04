@@ -107,6 +107,14 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 		}
 	}
 	
+	@Override
+	public void getCyclistWithoutDuplicateElement() {
+		getGenericUtility().getAllCyclistsMockData()
+		.stream()
+		.distinct()
+		.forEach(c -> logger.info("Cyclist info: " + c));
+	}
+	
 	private List<PersonBean> getAllPersonFromCsv() {
 		logger.info("START parsing csv file with details of individual person");
 		List<PersonBean> persons = new ArrayList<PersonBean>();

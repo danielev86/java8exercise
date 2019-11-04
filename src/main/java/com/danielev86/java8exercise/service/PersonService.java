@@ -20,4 +20,6 @@ public interface PersonService {
 
 	void getAllPersonBySpecificGenderWithFilter(String gender);
 
+	void getCyclistWithoutDuplicateElement();
+
 }
