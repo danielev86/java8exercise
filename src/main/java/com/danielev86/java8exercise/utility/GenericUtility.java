@@ -132,21 +132,26 @@ public class GenericUtility {
 		CyclistBean c2 = new CyclistBean();
 		c2.setFirstName("Christofer");
 		c2.setLastName("Froome");
-		c2.setTeamName("Trek - Ineos");
+		c2.setTeamName("Team - Ineos");
 		CyclistBean c3 = new CyclistBean();
 		c3.setFirstName("Tom");
 		c3.setLastName("Dumoulin");
 		c3.setTeamName("Jumbo VIsma");
 		CyclistBean c4 = new CyclistBean();
-		c4.setFirstName("Vincenzo");
-		c4.setLastName("Nibali");
+		c4.setFirstName("Gianluca");
+		c4.setLastName("Brambilla");
 		c4.setTeamName("Trek - Segafredo");
+		CyclistBean c5 = new CyclistBean();
+		c5.setFirstName("Gianluca");
+		c5.setLastName("Brambilla");
+		c5.setTeamName("Trek - Segafredo");
 		
 		List<CyclistBean> cyclists = new ArrayList<CyclistBean>();
 		cyclists.add(c1);
 		cyclists.add(c2);
 		cyclists.add(c3);
 		cyclists.add(c4);
+		cyclists.add(c5);
 		
 		return cyclists;
 	}

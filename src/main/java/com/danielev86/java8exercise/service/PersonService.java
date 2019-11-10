@@ -22,4 +22,8 @@ public interface PersonService {
 
 	void getCyclistWithoutDuplicateElement();
 
+	void getPersonsByGender();
+
+	void getCyclistsByTeam();
+
 }

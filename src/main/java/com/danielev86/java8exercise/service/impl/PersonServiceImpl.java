@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.danielev86.java8exercise.bean.CyclistBean;
 import com.danielev86.java8exercise.bean.PersonBean;
 import com.danielev86.java8exercise.constats.IConstants;
 import com.danielev86.java8exercise.service.CommonService;
@@ -113,6 +115,23 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 		.stream()
 		.distinct()
 		.forEach(c -> logger.info("Cyclist info: " + c));
+	}
+	
+	@Override
+	public void getPersonsByGender() {
+		getAllPersonFromCsv()
+		.stream()
+		.collect(Collectors.groupingBy(PersonBean::getGender))
+		.entrySet().forEach(System.out::println);
+	}
+	
+	@Override
+	public void getCyclistsByTeam() {
+		getGenericUtility().getAllCyclistsMockData()
+		.stream()
+		.collect(Collectors.groupingBy(CyclistBean::getTeamName))
+		.entrySet()
+		.forEach(es -> logger.info(es.getKey() + " - " + es.getValue().toString()));
 	}
 	
 	private List<PersonBean> getAllPersonFromCsv() {
