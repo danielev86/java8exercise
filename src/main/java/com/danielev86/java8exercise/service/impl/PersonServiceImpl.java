@@ -1,5 +1,6 @@
 package com.danielev86.java8exercise.service.impl;
 
+import static com.danielev86.java8exercise.constats.IConstants.FEMALE_GENDER_CODE;
 import static com.danielev86.java8exercise.utility.ComparatorUtility.getAllOrderedPersons;
 import static java.lang.Boolean.TRUE;
 import static java.util.stream.Collectors.groupingBy;
@@ -58,14 +59,14 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 		List<PersonBean> persons = getAllPersonFromCsv();
 		Map<String, List<PersonBean>> mapResult = persons.stream()
 				.collect(groupingBy(PersonBean::getGender));
-		writeCsvFile(mapResult.get(IConstants.FEMALE_GENDER_CODE), getGenericUtility().pathByOs() + "persons_gender.csv");
+		writeCsvFile(mapResult.get(FEMALE_GENDER_CODE), getGenericUtility().pathByOs() + "persons_gender.csv");
 	}
 	
 	@Override
 	public void getAllPersonBySpecificGenderWithFilter(String gender) {
 		List<PersonBean> persons = getAllPersonFromCsv()
 				.stream()
-				.filter(p -> IConstants.FEMALE_GENDER_CODE.equals(gender))
+				.filter(p -> FEMALE_GENDER_CODE.equals(gender))
 				.collect(toList());
 		writeCsvFile(persons, getGenericUtility().pathByOs() + "person_common_gender_filter.csv");
 	
@@ -89,7 +90,7 @@ public class PersonServiceImpl extends CommonService implements PersonService {
 	public void getOnlyNPersons(long limit) {
 		List<PersonBean> persons = getAllPersonFromCsv()
 				.stream()
-				.filter(person -> IConstants.FEMALE_GENDER_CODE.equals(person.getGender()))
+				.filter(person -> FEMALE_GENDER_CODE.equals(person.getGender()))
 				.limit(limit)
 				.collect(toList());
 		writeCsvFile(persons, getGenericUtility().pathByOs() + "limit_" + limit + "n_persons.csv" );
