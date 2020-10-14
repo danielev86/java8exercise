@@ -42,7 +42,7 @@ public class AppMain {
 		System.out.println(calculatorService.doubleUpAllElements());
 		System.out.println(calculatorService.combineOperation());
 		System.out.println(calculatorService.getFilteredElements());
-		
+		ctx.close();
 	}
 
 }
